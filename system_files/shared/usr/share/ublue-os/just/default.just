@@ -25,6 +25,27 @@ bios-info:
     echo "Release Date: $(dmidecode -s bios-release-date)"
     EOF
 
+clean-system:
+    #!/usr/bin/bash
+    if gum confirm "Prune all Podman images and volumes?"; then
+        podman image prune -af
+        podman volume prune -f
+    fi
+
+    if command -v docker >/dev/null 2>&1; then
+      if gum confirm "Prune all Docker images and volumes?"; then
+        docker image prune -af
+        docker volume prune -f
+      fi
+    fi
+
+    flatpak uninstall --unused
+    rpm-ostree cleanup -bm
+    if [ -x /home/linuxbrew/.linuxbrew/bin/brew ]; then
+        brew autoremove
+        brew cleanup
+    fi
+
 # Show all messages from this boot
 logs-this-boot:
     sudo journalctl --no-hostname -b 0

@@ -25,6 +25,17 @@ bios-info:
     echo "Release Date: $(dmidecode -s bios-release-date)"
     EOF
 
+clean-system:
+    #!/usr/bin/bash
+    podman image prune -af
+    podman volume prune -f
+    flatpak uninstall --unused
+    rpm-ostree cleanup -bm
+    if [ -x /home/linuxbrew/.linuxbrew/bin/brew ]; then
+        brew autoremove
+        brew cleanup
+    fi
+
 # Show all messages from this boot
 logs-this-boot:
     sudo journalctl --no-hostname -b 0

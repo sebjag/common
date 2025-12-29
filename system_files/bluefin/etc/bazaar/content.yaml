@@ -319,6 +319,7 @@ rows:
             - com.github.finefindus.eyedropper
             - io.github.plrigaux.sysd-manager
             - org.mozilla.vpn
+            - org.cryptomator.Cryptomator
 
   - sections:
       - expand-horizontally: true
